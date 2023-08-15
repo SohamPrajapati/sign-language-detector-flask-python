@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #444444;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .darshit1 {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: -1;
+            animation: DRR;
+            animation-duration: 3s;
+        }
+    </style>
+    <script type="text/javascript">
+        // Function to hide the flash message after a specific interval
+        function hideFlashMessage() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                setTimeout(function() {
+                    flashMessage.style.display = 'none';
+                }, 2000); // Adjust the time (in milliseconds) as needed
+            }
+        }
+    </script>
+</head>
+
+<body onload="hideFlashMessage()">
+    <!-- <img src="static/bgNew.jpg" alt="" class="darshit1"> -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('home')}}">HandSignify</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('home')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#">{{name}}</a>
+                          </li>
+                      <li class="nav-item dropdown">
+                          <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              Settings
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                          <li><a class="dropdown-item" href="{{ url_for('reset_email') }}">Reset Email</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('update_password') }}">Reset password</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </div>    
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <a href="{{url_for('logout')}}"><button class="btn btn-dark"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</button></a>
+                  </div>    
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div id="flash-message" class="alert  alert-{{category}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="under">
+        <img src="{{ url_for('video_feed') }}">
+
+    </div>
+    
+
+</body>
+
+</html>
