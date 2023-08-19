@@ -105,12 +105,11 @@ def dashboard():
     return redirect(url_for('login'))
 # ----------------------------------------------------
 
-
+# -------------------About Page-----------------------
 @app.route('/about', methods=['GET', 'POST'])
-@login_required
 def about():
-    
     return render_template('about.html')
+# ----------------------------------------------------
 
 # -------------------Logged Out Page-------------------
 
