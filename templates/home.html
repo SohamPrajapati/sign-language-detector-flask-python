@@ -8,6 +8,9 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * {
             margin: 0;
@@ -21,6 +24,30 @@
             z-index: -1;
             animation: DRR;
             animation-duration: 3s;
+        }
+
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            line-height: 1.8;
+            margin: 0; /* Add margin to the body to prevent overlap */
+        }
+
+        /* ... your existing styles ... */
+
+        .navbar {
+            z-index: 1; /* Ensure the navbar is above other content */
+        }
+
+        .bgimg-1 {
+            /* Center the background image content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
     </style>
     <script type="text/javascript">
@@ -37,11 +64,11 @@
 </head>
 
 <body onload="hideFlashMessage()">
-    <img src="static/bgNew.jpg" alt="" class="darshit1">
+    <img src="static/background.jpeg" alt="" class="darshit1">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">HandSignify</a>
+            <a class="navbar-brand" href="{{ url_for('home')}}">HandSignify</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -71,11 +98,28 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+
+
+
+    <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+        <div class="w3-display-left w3-text-white" style="padding:48px">
+            <span class="w3-jumbo w3-hide-small">Welcome to HandSignify</span><br>
+            <span class="w3-xxlarge w3-hide-large w3-hide-medium">Welcome to HandSignify</span><br>
+            <span class="w3-large">Sign Language Translator is a web application that translates sign language to text
+                and vice versa...</span>
+            <p><a href="#about"
+                    class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn
+                    more and start today</a></p>
+        </div>
+    </header>
+
     <!-- <h1 style="color: aliceblue;">Welcome Page in Flask.</h1> -->
-    <div class="container" style="color: aliceblue;">
+    
+    <!-- <div class="container" style="color: aliceblue;">
         <div class="row">
             <div class="col-md-6">
-                <img src="static/first.png" alt="" class="first">
+                <img src="static/background.jpeg" alt="" class="first">
             </div>
             <div class="col-md-6">
                 <h1 class="under">Welcome to HandSignify</h1>
@@ -87,7 +131,7 @@
                     that can be used by anyone who wants to learn sign language or wants to communicate with a deaf
                     person.</h4>
             </div>
-        </div>
+        </div> -->
 </body>
 
 </html>
