@@ -106,7 +106,6 @@ def dashboard():
 
 
 @app.route('/about', methods=['GET', 'POST'])
-@login_required
 def about():
     
     return render_template('about.html')
@@ -282,8 +281,12 @@ def update_password():
 
 
 # --------------------------- Machine Learning ------------------
-model_dict = pickle.load(open('./model.p', 'rb'))
-model = model_dict['model']
+try:
+    model_dict = pickle.load(open('./model.p', 'rb'))
+    model = model_dict['model']
+except Exception as e:
+    print("Error loading the model:", e)
+    model = None 
 def generate_frames():
     cap = cv2.VideoCapture(0)
     mp_hands = mp.solutions.hands
