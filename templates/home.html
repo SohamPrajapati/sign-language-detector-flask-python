@@ -53,7 +53,7 @@
                         <a class="nav-link active" aria-current="page" href="{{ url_for('home')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="{{ url_for('about')}}">About</a>
                     </li>
                 </ul>
             </div>
@@ -71,23 +71,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <!-- <h1 style="color: aliceblue;">Welcome Page in Flask.</h1> -->
-    <div class="container" style="color: aliceblue;">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="static/first.png" alt="" class="first">
-            </div>
-            <div class="col-md-6">
-                <h1 class="under">Welcome to HandSignify</h1>
-                <h3 class="under">Sign Language Translator</h3>
-                <h4 class="under">Sign Language Translator is a web application that translates sign language to text
-                    and vice versa. It is a web application that can be used by anyone who wants to learn sign language
-                    or wants to communicate with a deaf person. It is a web application that can be used by anyone who
-                    wants to learn sign language or wants to communicate with a deaf person. It is a web application
-                    that can be used by anyone who wants to learn sign language or wants to communicate with a deaf
-                    person.</h4>
-            </div>
-        </div>
+    <h1 style="color: aliceblue;">Welcome Page in Flask.</h1>
 </body>
 
 </html>
