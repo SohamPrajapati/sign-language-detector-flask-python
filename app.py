@@ -100,15 +100,16 @@ def login():
 def dashboard():
     if 'logged_in' in session and session['logged_in']:
         name = session.get('name')
-        return render_template('dashboard.html', name=name)
+        character = session.get('character')
+        return render_template('dashboard.html', name=name, character=character)
     return redirect(url_for('login'))
 # ----------------------------------------------------
 
-
+# -------------------About Page-----------------------
 @app.route('/about', methods=['GET', 'POST'])
 def about():
-    
     return render_template('about.html')
+# ----------------------------------------------------
 
 # -------------------Logged Out Page-------------------
 
@@ -348,18 +349,26 @@ def generate_frames():
                 prediction = model.predict([np.asarray(data_aux)])
                 predicted_character = labels_dict[int(prediction[0])]
 
+
+                # print("Predicted character : ",predicted_character)
+
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-                cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
-                               cv2.LINE_AA)
+                cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
+                flash(f'Predicted Character is {predicted_character}.', category='success')
+                session['character']=predicted_character
+                
+                # Update prediction on the HTML page
+                # js_code = f"updatePrediction('{predicted_character}')"
+                # yield (js_code.encode(), b'application/javascript\r\n')
 
             except Exception as e:
-                   print(e)
+                   pass
+                   #print(e)
                    # Handle prediction error
 
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-                  b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/video_feed')
 def video_feed():
