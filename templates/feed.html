@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+  }
+  .feedback-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .stars {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .star.active {
+    color: #ffc107;
+  }
+  .review-textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .submit-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="feedback-form">
+  <h2>Leave your feedback</h2>
+  <div class="stars">
+    <span class="star" data-value="1">&#9733;</span>
+    <span class="star" data-value="2">&#9733;</span>
+    <span class="star" data-value="3">&#9733;</span>
+    <span class="star" data-value="4">&#9733;</span>
+    <span class="star" data-value="5">&#9733;</span>
+  </div>
+  <textarea class="review-textarea" placeholder="Write your review here..."></textarea>
+  <button class="submit-button">Submit</button>
+</div>
+<script>
+  const stars = document.querySelectorAll(".star");
+  const reviewTextarea = document.querySelector(".review-textarea");
+  const submitButton = document.querySelector(".submit-button");
+
+  let selectedRating = 0;
+
+  stars.forEach(star => {
+    star.addEventListener("click", () => {
+      selectedRating = parseInt(star.getAttribute("data-value"));
+      updateStarRating(selectedRating);
+    });
+  });
+
+  function updateStarRating(rating) {
+    stars.forEach(star => {
+      const value = parseInt(star.getAttribute("data-value"));
+      if (value <= rating) {
+        star.classList.add("active");
+      } else {
+        star.classList.remove("active");
+      }
+    });
+  }
+
+  submitButton.addEventListener("click", () => {
+    const review = reviewTextarea.value;
+    if (selectedRating === 0) {
+      alert("Please select a rating before submitting.");
+    } else {
+      alert(`Thank you for your ${selectedRating}-star review!\n\nReview: ${review}`);
+    }
+  });
+</script>
+</body>
+</html>

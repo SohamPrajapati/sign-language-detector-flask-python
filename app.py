@@ -16,6 +16,7 @@ import mediapipe as mp
 import numpy as np
 import requests
 
+
 app = Flask(__name__)
 
 bcrypt = Bcrypt(app)
@@ -111,6 +112,14 @@ def dashboard():
 @app.route('/about', methods=['GET', 'POST'])
 def about():
     return render_template('about.html')
+# ----------------------------------------------------
+
+# -------------------feed back Page-----------------------
+@app.route('/feed', methods=['GET', 'POST'])
+@login_required
+def feed():
+    return render_template('feed.html')
+
 # ----------------------------------------------------
 
 # -------------------Logged Out Page-------------------
@@ -359,28 +368,9 @@ def generate_frames():
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
                 cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
                 # flash(f'Predicted Character is {predicted_character}.', category='success')
-                predicted_character = labels_dict[int(prediction[0])]
+                # predicted_character = labels_dict[int(prediction[0])]
                 session['character']=predicted_character
-                url = 'http://127.0.0.1:5000/'  # Use the correct URL
-                # response = requests.post(url, json=data)
-                # if response.status_code == 200:
-                #     print("Prediction sent successfully to the web application.")
-                # else:
-                #     print("Failed to send prediction to the web application.")
                 
-                @app.route('/send_prediction', methods=['POST'])
-                def receive_prediction():
-                    data = request.get_json()  # Get the JSON data sent from the terminal
-                    predicted_character = data.get('predicted_character')  # Extract the predicted character
-
-                    # You can store the predicted character in a session variable, database, etc.
-                    session['predicted_character'] = predicted_character
-
-                    # Return a JSON response to acknowledge the received prediction
-                    return jsonify({'message': 'Prediction received successfully'})
-                # Update prediction on the HTML page
-                # js_code = f"updatePrediction('{predicted_character}')"
-                #yield jsonify({'predicted_character': predicted_character})
                 
             except Exception as e:
                    pass
