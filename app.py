@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, flash, session, request, Response
+from flask import Flask, jsonify, render_template, url_for, redirect, flash, session, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -14,6 +14,8 @@ import pickle
 import cv2
 import mediapipe as mp
 import numpy as np
+import requests
+
 
 app = Flask(__name__)
 
@@ -98,6 +100,7 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+    # character="A"
     if 'logged_in' in session and session['logged_in']:
         name = session.get('name')
         character = session.get('character')
@@ -109,6 +112,14 @@ def dashboard():
 @app.route('/about', methods=['GET', 'POST'])
 def about():
     return render_template('about.html')
+# ----------------------------------------------------
+
+# -------------------feed back Page-----------------------
+@app.route('/feed', methods=['GET', 'POST'])
+@login_required
+def feed():
+    return render_template('feed.html')
+
 # ----------------------------------------------------
 
 # -------------------Logged Out Page-------------------
@@ -288,6 +299,7 @@ try:
 except Exception as e:
     print("Error loading the model:", e)
     model = None 
+@app.route('/generate_frames',methods=['GET','POST'])
 def generate_frames():
     cap = cv2.VideoCapture(0)
     mp_hands = mp.solutions.hands
@@ -296,8 +308,9 @@ def generate_frames():
 
     hands = mp_hands.Hands(static_image_mode=True,min_detection_confidence=0.3)
 
-    labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
-                   13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z'}
+    labels_dict = {0: 'A', 1: 'B', 2: 'C'}
+    # labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
+    #                13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z'}
 
     while True:
         data_aux = []
@@ -350,17 +363,15 @@ def generate_frames():
                 predicted_character = labels_dict[int(prediction[0])]
 
 
-                # print("Predicted character : ",predicted_character)
-
+                print("Predicted character : ",predicted_character)
+                
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
                 cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
-                flash(f'Predicted Character is {predicted_character}.', category='success')
+                # flash(f'Predicted Character is {predicted_character}.', category='success')
+                # predicted_character = labels_dict[int(prediction[0])]
                 session['character']=predicted_character
                 
-                # Update prediction on the HTML page
-                # js_code = f"updatePrediction('{predicted_character}')"
-                # yield (js_code.encode(), b'application/javascript\r\n')
-
+                
             except Exception as e:
                    pass
                    #print(e)

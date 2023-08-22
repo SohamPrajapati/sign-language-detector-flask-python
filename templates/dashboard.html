@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         /* body {
             background-color: #444444;
@@ -32,13 +34,13 @@
         function hideFlashMessage() {
             var flashMessage = document.getElementById('flash-message');
             if (flashMessage) {
-                setTimeout(function() {
+                setTimeout(function () {
                     flashMessage.style.display = 'none';
                 }, 2000); // Adjust the time (in milliseconds) as needed
             }
         }
 
-        
+
         // Function to Print prediction Characters in text
         // function updatePrediction(prediction) {
         //     document.getElementById('prediction').textContent = prediction;
@@ -48,7 +50,7 @@
 
 <body onload="hideFlashMessage()">
     <img src="static/background.jpeg" alt="" class="darshit1">
-    
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('home')}}">HandSignify</a>
@@ -67,46 +69,98 @@
                     </li>
                 </ul>
             </div>
-            <div class="d-flex justify-content-end">
-                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">{{name}}</a>
-                          </li>
-                      <li class="nav-item dropdown">
-                          <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                              Settings
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                          <li><a class="dropdown-item" href="{{ url_for('reset_email') }}">Reset Email</a></li>
-                          <li><a class="dropdown-item" href="{{ url_for('update_password') }}">Reset password</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                </div>    
+            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reviewModalLabel">Leave a Review</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Include your feedback form HTML here -->
+                            <!-- You can use an iframe to load the review page or directly include the HTML -->
+                            <iframe src="{{ url_for('feed') }}" width="100%" height="400" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-end">
                 <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                    <a href="{{url_for('logout')}}"><button class="btn btn-dark"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</button></a>
-                  </div>    
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-dark dropdown-toggle mx-2" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                {{name}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" href="{{ url_for('reset_email') }}">Reset Email</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('update_password') }}">Reset password</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reviewModal">Review</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <a href="{{url_for('logout')}}"><button class="btn btn-outline-light"><i class="fa fa-sign-out"
+                                aria-hidden="true"></i>Logout</button></a>
+                </div>
             </div>
         </div>
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category,message in messages %}
-                <div id="flash-message" class="alert  alert-{{category}}">{{message}}</div>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for category,message in messages %}
+    <div id="flash-message" class="alert  alert-{{category}}">{{message}}</div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
     <div class="under">
+        <button id="startCameraButton" class="btn btn-outline-light my-2">Start Camera</button>
+        <button id="closeCameraButton" style="display: none;" class="btn btn-outline-light my-2">Close Camera</button>
         <h1>Camera Stream</h1>
-        <img src="{{ url_for('video_feed') }}">
-        <h1>{{character}}</h1>
-
+        <div id="cameraFeedContainer" style="display: none;">
+            <img id="cameraFeed" src="">
+        </div>
+        <h1>Predicted character:-{{character}}</h1>
     </div>
-    
+
+        <script>
+
+
+            const startCameraButton = document.getElementById('startCameraButton');
+            const closeCameraButton = document.getElementById('closeCameraButton');
+            const cameraFeed = document.getElementById('cameraFeed');
+            const cameraFeedContainer = document.getElementById('cameraFeedContainer');
+
+            startCameraButton.addEventListener('click', () => {
+                // Show the camera feed container
+                cameraFeedContainer.style.display = 'block';
+                // Start the camera feed
+                cameraFeed.src = "{{ url_for('video_feed') }}";
+                // Show the "Close Camera" button
+                closeCameraButton.style.display = 'block';
+                // Hide the "Start Camera" button
+                startCameraButton.style.display = 'none';
+            });
+
+            closeCameraButton.addEventListener('click', () => {
+                // Hide the camera feed container
+                cameraFeedContainer.style.display = 'none';
+                // Stop the camera feed by clearing the src
+                cameraFeed.src = '';
+                // Hide the "Close Camera" button
+                closeCameraButton.style.display = 'none';
+                // Show the "Start Camera" button
+                startCameraButton.style.display = 'block';
+            });
+        </script>
+        <!-- Add this inside the <script> tag in your HTML template -->
+
+
 </body>
 
 </html>
