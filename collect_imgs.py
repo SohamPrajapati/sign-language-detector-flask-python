@@ -1,14 +1,14 @@
 # I am using mediapipe as a hand detector and landmark detector and a Random Forest classifier as sign classifier.
+
 from flask import Blueprint
 import os
 import cv2
-
 
 DATA_DIR = './data'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-number_of_classes = 26
+number_of_classes = 10
 dataset_size = 100
 
 cap = cv2.VideoCapture(0)
@@ -30,6 +30,7 @@ for j in range(number_of_classes):
     counter = 0
     while counter < dataset_size:
         ret, frame = cap.read()
+        print("Captured frame shape:", frame.shape)  # Debugging print
         cv2.imshow('frame', frame)
         cv2.waitKey(25)
         cv2.imwrite(os.path.join(DATA_DIR, str(j), '{}.jpg'.format(counter)), frame)

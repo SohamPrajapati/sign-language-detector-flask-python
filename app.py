@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, flash, session, request, Response
+from flask import Flask, render_template, url_for, redirect, flash, session, request, Response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -14,8 +14,11 @@ import pickle
 import cv2
 import mediapipe as mp
 import numpy as np
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests for all routes
+
 
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -55,13 +58,54 @@ class User(db.Model, UserMixin):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 # ----------------------------------------------------
 
-# -------------------Welcome or Home Page-------------------
+# -------------------Welcome or Home Page-------------
 
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     session.clear()
     return render_template('home.html')
+# ----------------------------------------------------
+
+# -------------------About Page-----------------------
+@app.route('/about', methods=['GET', 'POST'])
+def about():
+    return render_template('about.html')
+# ----------------------------------------------------
+
+# -------------------feed back Page-----------------------
+@app.route('/feed', methods=['GET', 'POST'])
+@login_required
+def feed():
+    return render_template('feed.html')
+
+# ----------------------------------------------------
+
+# -------------------Dashboard or Logged Page-------------------
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    if 'logged_in' in session and session['logged_in']:
+        name = session.get('name')
+        # character = 'A'
+        character = session.get('character')
+        # print("Predicted character in dashboard : ",character)
+        # return render_template('dashboard.html', name=name)
+        return render_template('dashboard.html', name=name, character=character)
+    return redirect(url_for('login'))
+# ----------------------------------------------------
+
+# -------------------Discover More Page---------------
+
+@app.route('/discover_more', methods=['GET', 'POST']) 
+def discover_more():
+    return render_template('discover_more.html')
+# ----------------------------------------------------
+
+# -------------------Guide Page-----------------------
+
+@app.route('/guide', methods=['GET', 'POST'])
+def guide():
+    return render_template('guide.html')
 # ----------------------------------------------------
 
 
@@ -94,22 +138,7 @@ def login():
 # ----------------------------------------------------
 
 
-# -------------------Dashboard or Logged Page-------------------
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    if 'logged_in' in session and session['logged_in']:
-        name = session.get('name')
-        character = session.get('character')
-        return render_template('dashboard.html', name=name, character=character)
-    return redirect(url_for('login'))
-# ----------------------------------------------------
 
-# -------------------About Page-----------------------
-@app.route('/about', methods=['GET', 'POST'])
-def about():
-    return render_template('about.html')
-# ----------------------------------------------------
 
 # -------------------Logged Out Page-------------------
 
@@ -288,6 +317,8 @@ try:
 except Exception as e:
     print("Error loading the model:", e)
     model = None 
+    
+@app.route('/generate_frames', methods=['GET','POST'])
 def generate_frames():
     cap = cv2.VideoCapture(0)
     mp_hands = mp.solutions.hands
@@ -350,16 +381,16 @@ def generate_frames():
                 predicted_character = labels_dict[int(prediction[0])]
 
 
-                # print("Predicted character : ",predicted_character)
-
+                print("Predicted character : ",predicted_character)
+                # character = predicted_character
+                # print("Predicted character is : ",character)
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
                 cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
-                flash(f'Predicted Character is {predicted_character}.', category='success')
-                session['character']=predicted_character
-                
-                # Update prediction on the HTML page
-                # js_code = f"updatePrediction('{predicted_character}')"
-                # yield (js_code.encode(), b'application/javascript\r\n')
+                character='A'
+                session['character']= character
+
+                # return render_template('dashboard.html',character =predicted_character)
+                yield jsonify({'predicted_character': predicted_character})
 
             except Exception as e:
                    pass
@@ -369,7 +400,7 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
+            
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')

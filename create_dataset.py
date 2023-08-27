@@ -3,11 +3,9 @@
 
 import os
 import pickle
-
 import mediapipe as mp
 import cv2
 import matplotlib.pyplot as plt
-
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -38,6 +36,9 @@ for dir_ in os.listdir(DATA_DIR):
 
                     x_.append(x)
                     y_.append(y)
+
+                print("Length of x_:", len(x_))
+                print("Length of y_:", len(y_))
 
                 for i in range(len(hand_landmarks.landmark)):
                     x = hand_landmarks.landmark[i].x
