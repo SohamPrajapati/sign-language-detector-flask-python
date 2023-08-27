@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         /* body {
             background-color: #444444;
@@ -86,13 +88,22 @@
                 <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
+<<<<<<< HEAD
                             <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+=======
+                            <button class="btn btn-dark dropdown-toggle mx-2" data-bs-toggle="dropdown"
+>>>>>>> 1113764719ed2c60942772e9331baec02b67b528
                                 aria-expanded="false">
                                 {{name}}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 <li><a class="dropdown-item" href="{{ url_for('reset_email') }}">Reset Email</a></li>
+<<<<<<< HEAD
                                 <li><a class="dropdown-item" href="{{ url_for('update_password') }}">Reset password</a></li>
+=======
+                                <li><a class="dropdown-item" href="{{ url_for('update_password') }}">Reset password</a>
+                                </li>
+>>>>>>> 1113764719ed2c60942772e9331baec02b67b528
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reviewModal">Review</a></li>
                             </ul>
                         </li>
@@ -101,7 +112,11 @@
             </div>
             <div class="d-flex justify-content-end">
                 <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+<<<<<<< HEAD
                     <a href="{{url_for('logout')}}"><button class="btn btn-dark"><i class="fa fa-sign-out"
+=======
+                    <a href="{{url_for('logout')}}"><button class="btn btn-outline-light"><i class="fa fa-sign-out"
+>>>>>>> 1113764719ed2c60942772e9331baec02b67b528
                                 aria-hidden="true"></i>Logout</button></a>
                 </div>
             </div>
@@ -125,6 +140,7 @@
             <img id="cameraFeed" src="">
         </div>
         <h1>Predicted character:-{{character}}</h1>
+<<<<<<< HEAD
     </div>
 
         <script>
@@ -243,6 +259,43 @@
         });
     </script> -->
      -->
+=======
+    </div>
+
+        <script>
+
+
+            const startCameraButton = document.getElementById('startCameraButton');
+            const closeCameraButton = document.getElementById('closeCameraButton');
+            const cameraFeed = document.getElementById('cameraFeed');
+            const cameraFeedContainer = document.getElementById('cameraFeedContainer');
+
+            startCameraButton.addEventListener('click', () => {
+                // Show the camera feed container
+                cameraFeedContainer.style.display = 'block';
+                // Start the camera feed
+                cameraFeed.src = "{{ url_for('video_feed') }}";
+                // Show the "Close Camera" button
+                closeCameraButton.style.display = 'block';
+                // Hide the "Start Camera" button
+                startCameraButton.style.display = 'none';
+            });
+
+            closeCameraButton.addEventListener('click', () => {
+                // Hide the camera feed container
+                cameraFeedContainer.style.display = 'none';
+                // Stop the camera feed by clearing the src
+                cameraFeed.src = '';
+                // Hide the "Close Camera" button
+                closeCameraButton.style.display = 'none';
+                // Show the "Start Camera" button
+                startCameraButton.style.display = 'block';
+            });
+        </script>
+        <!-- Add this inside the <script> tag in your HTML template -->
+
+
+>>>>>>> 1113764719ed2c60942772e9331baec02b67b528
 </body>
 
 </html>
