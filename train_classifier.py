@@ -1,6 +1,7 @@
 # I am using mediapipe as a hand detector and landmark detector and a Random Forest classifier as sign classifier.
 
 
+
 import pickle
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -9,6 +10,12 @@ from sklearn.metrics import accuracy_score
 
 # Load data from the pickle file
 data_dict = pickle.load(open('./data.pickle', 'rb'))
+# print("Data Entries Before Conversion:")
+# for entry in data_dict['data']:
+#     print("Length:",len(entry))
+# print(data_dict.keys())
+# print(data_dict)
+
 
 # Extract data and labels
 data = np.asarray(data_dict['data'])
@@ -24,7 +31,7 @@ for d in data:
 data_flattened = np.array(data_flattened)
 
 # Split data into training and testing sets
-x_train, x_test, y_train, y_test = train_test_split(data_flattened, labels, test_size=0.2, shuffle=True, stratify=labels)
+x_train, x_test, y_train, y_test = train_test_split(data_flattened, labels, test_size=0.2, shuffle=True, stratify=None)
 
 # Initialize the RandomForestClassifier
 model = RandomForestClassifier()
