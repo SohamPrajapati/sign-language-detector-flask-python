@@ -16,3 +16,27 @@ Sign language is a crucial form of communication for individuals with hearing im
 - Random Forest implementation
 
 # Usage
+1. Installation:
+`# Clone the repository
+git clone https://github.com/your_username/sign-language-translator.git
+
+# Navigate to the project directory
+cd sign-language-translator
+
+# Install required dependencies
+pip install -r requirements.txt
+`
+
+2. Run the application:
+`python translator.py
+`
+
+4. Interact with the translator:
+  - Activate the camera for real-time gesture recognition.
+  - Perform sign language gestures in front of the camera.
+
+# Project Report
+For detailed insights, analysis, and findings, refer to the Project Report provided in the repository.
+
+# Contributing
+Contributions are welcome! If you'd like to contribute to this project, feel free to open issues, create pull requests, or reach out to discuss potential improvements.
