@@ -17,21 +17,23 @@ Sign language is a crucial form of communication for individuals with hearing im
 
 # Usage
 1. Installation:
-`# Clone the repository
+`
+#Clone the repository
 git clone https://github.com/your_username/sign-language-translator.git
 
-# Navigate to the project directory
+#Navigate to the project directory
 cd sign-language-translator
 
-# Install required dependencies
+#Install required dependencies
 pip install -r requirements.txt
 `
 
 2. Run the application:
-`python translator.py
+`
+python translator.py
 `
 
-4. Interact with the translator:
+3. Interact with the translator:
   - Activate the camera for real-time gesture recognition.
   - Perform sign language gestures in front of the camera.
 
