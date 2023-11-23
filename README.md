@@ -33,7 +33,7 @@ Sign language is a crucial form of communication for individuals with hearing im
    python sign-language-detector-flask-python.py
   ```
    
-  3. Interact with the translator:
+  3. Interact with the translator :
    - Activate the camera for real-time gesture recognition.
    - Perform sign language gestures in front of the camera.
  
