@@ -34,8 +34,8 @@ Sign language is a crucial form of communication for individuals with hearing im
   ```
   
   3. Interact with the translator:
-    - Activate the camera for real-time gesture recognition.
-    - Perform sign language gestures in front of the camera.
+   - Activate the camera for real-time gesture recognition.
+   - Perform sign language gestures in front of the camera.
 
 ## Project Report
 For detailed insights, analysis, and findings, refer to the Project Report provided in the repository.
