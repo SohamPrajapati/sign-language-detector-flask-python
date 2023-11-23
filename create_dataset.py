@@ -1,6 +1,7 @@
 # I am using mediapipe as a hand detector and landmark detector and a Random Forest classifier as sign classifier.
 
 
+
 import os
 import pickle
 import mediapipe as mp

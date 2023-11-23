@@ -1,8 +1,14 @@
-from flask import Flask, render_template, url_for, redirect, flash, session, request, Response
+# I am using mediapipe as a hand landmark processing and prediction and landmark detector and a Random Forest classifier as sign classifier.
+
+
+from socket import SocketIO
+from wsgiref.simple_server import WSGIServer
+from flask import Flask, jsonify, render_template, url_for, redirect, flash, session, request, Response
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
+import socketio
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, Email, EqualTo
 from flask_bcrypt import Bcrypt
@@ -17,10 +23,13 @@ import mediapipe as mp
 import numpy as np
 
 app = Flask(__name__)
+
 CORS(app)  # Allow cross-origin requests for all routes
 
-
+# -------------------Encrypt Password using Hash Func-------------------
 bcrypt = Bcrypt(app)
+
+# -------------------Database Model Setup-------------------
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 serializer = Serializer(app.config['SECRET_KEY'])
@@ -36,7 +45,7 @@ login_manager.login_view = 'login'
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USERNAME"] = 'handssignify@gmail.com'
-app.config["MAIL_PASSWORD"] = 'bluewjzqxngfiqrg'
+app.config["MAIL_PASSWORD"] = 'ttbylakctxvvvnxe'
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 mail = Mail(app)
@@ -66,43 +75,21 @@ def home():
     return render_template('home.html')
 # ----------------------------------------------------
 
-# -------------------About Page-----------------------
-@app.route('/about', methods=['GET', 'POST'])
-def about():
-    return render_template('about.html')
-# ----------------------------------------------------
-
 # -------------------feed back Page-----------------------
 @app.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed():
     return render_template('feed.html')
-
 # ----------------------------------------------------
 
-# -------------------Dashboard or Logged Page-------------------
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    if 'logged_in' in session and session['logged_in']:
-        name = session.get('name')
-        # character = 'A'
-        character = session.get('character')
-        # print("Predicted character in dashboard : ",character)
-        # return render_template('dashboard.html', name=name)
-        return render_template('dashboard.html', name=name, character=character)
-    return redirect(url_for('login'))
-# ----------------------------------------------------
 
 # -------------------Discover More Page---------------
-
 @app.route('/discover_more', methods=['GET', 'POST']) 
 def discover_more():
     return render_template('discover_more.html')
 # ----------------------------------------------------
 
 # -------------------Guide Page-----------------------
-
 @app.route('/guide', methods=['GET', 'POST'])
 def guide():
     return render_template('guide.html')
@@ -144,8 +131,9 @@ def login():
 def dashboard():
     if 'logged_in' in session and session['logged_in']:
         name = session.get('name')
-        character = session.get('character')
-        return render_template('dashboard.html', name=name, character=character)
+        # character = session.get('character')
+        # templs = ['detect_characters.html', 'dashboard.html']
+        return render_template('dashboard.html', name=name)
     return redirect(url_for('login'))
 # ----------------------------------------------------
 
@@ -249,7 +237,7 @@ class ForgotPasswordForm(FlaskForm):
 
 @staticmethod
 def send_mail(name, email, otp):
-    msg = Message('Reset Email OTP Password',sender='jalsaparty15@gmail.com', recipients=[email])
+    msg = Message('Reset Email OTP Password',sender='handssignify@gmail.com', recipients=[email])
     msg.body = "Hii " + name + "," + "\nYour email OTP is :"+str(otp)
     mail.send(msg)
 
@@ -331,7 +319,8 @@ try:
     model = model_dict['model']
 except Exception as e:
     print("Error loading the model:", e)
-    model = None 
+    model = None
+@app.route('/generate_frames', methods=['POST'])
 def generate_frames():
     cap = cv2.VideoCapture(0)
     mp_hands = mp.solutions.hands
@@ -340,9 +329,9 @@ def generate_frames():
 
     hands = mp_hands.Hands(static_image_mode=True,min_detection_confidence=0.3)
 
-    labels_dict = {0: 'A', 1: 'B', 2: 'C'}
-    # labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
-    #                13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z'}
+    # labels_dict = {0: 'A', 1: 'B', 2: 'C'}
+    labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
+               13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z', 26: 'Hello', 27: 'Done', 28: 'Thank You', 29: 'I Love you', 30: 'Sorry', 31: 'Please', 32: 'You are welcome.' }
 
     while True:
         data_aux = []
@@ -393,18 +382,12 @@ def generate_frames():
             try:
                 prediction = model.predict([np.asarray(data_aux)])
                 predicted_character = labels_dict[int(prediction[0])]
-
-
-                # print("Predicted character : ",predicted_character)
+                response_data = {'characters': predicted_character}
+                print("Predicted character : ",predicted_character)
 
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
                 cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,cv2.LINE_AA)
-                flash(f'Predicted Character is {predicted_character}.', category='success')
-                session['character']=predicted_character
-                
-                # Update prediction on the HTML page
-                # js_code = f"updatePrediction('{predicted_character}')"
-                # yield (js_code.encode(), b'application/javascript\r\n')
+                # flash(f'Predicted Character is {predicted_character}.', category='success')
 
             except Exception as e:
                    pass
@@ -414,11 +397,12 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-    
+
 # -----------------------------  end  ---------------------------
+
 if __name__ == '__main__':
     app.run(debug=True)

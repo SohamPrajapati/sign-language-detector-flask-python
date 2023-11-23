@@ -1,4 +1,4 @@
-# I am using mediapipe as a hand detector and landmark detector and a Random Forest classifier as sign classifier.
+# I am using mediapipe as a hand landmark processing and prediction and landmark detector and a Random Forest classifier as sign classifier.
 
 from flask import Blueprint
 import os
@@ -8,7 +8,7 @@ DATA_DIR = './data'
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-number_of_classes = 10
+number_of_classes = 33
 dataset_size = 100
 
 cap = cv2.VideoCapture(0)
