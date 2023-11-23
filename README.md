@@ -19,10 +19,10 @@ Sign language is a crucial form of communication for individuals with hearing im
   1. Installation:
   ```
   #Clone the repository
-  git clone https://github.com/your_username/sign-language-translator.git
+  git clone https://github.com/SohamPrajapati/sign-language-detector-flask-python.git
   
   #Navigate to the project directory
-  cd sign-language-translator
+  cd sign-language-detector-flask-python
   
   #Install required dependencies
   pip install -r requirements.txt
@@ -30,7 +30,7 @@ Sign language is a crucial form of communication for individuals with hearing im
   
   2. Run the application:
   ```
-  python translator.py
+  python sign-language-detector-flask-python.py
   ```
   
   3. Interact with the translator:
