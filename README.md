@@ -17,7 +17,7 @@ Sign language is a crucial form of communication for individuals with hearing im
   
 ## Usage
    1. Installation:
-    ```
+   ```
     #Clone the repository
     git clone https://github.com/SohamPrajapati/sign-language-detector-flask-python.git
     
@@ -26,12 +26,12 @@ Sign language is a crucial form of communication for individuals with hearing im
     
     #Install required dependencies
     pip install -r requirements.txt
-    ```
+   ```
     
    2. Run the application:
-    ```
+   ```
     python sign-language-detector-flask-python.py
-    ```
+   ```
     
    3. Interact with the translator:
     - Activate the camera for real-time gesture recognition.
