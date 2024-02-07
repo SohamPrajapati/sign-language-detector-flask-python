@@ -36,6 +36,16 @@ Sign language is a crucial form of communication for individuals with hearing im
   3. Interact with the translator :
    - Activate the camera for real-time gesture recognition.
    - Perform sign language gestures in front of the camera.
+
+## Screenshots
+- **Home Page**
+![Screenshot (50)](https://github.com/SohamPrajapati/sign-language-detector-flask-python/assets/95955650/1a2d2170-b481-4a38-b233-ca31cebaa405)
+
+- **About Page**
+![Screenshot (104)](https://github.com/SohamPrajapati/sign-language-detector-flask-python/assets/95955650/362fcbaa-1cc4-4889-b6d9-ed46eea28be2)
+
+- **About Page**
+![hand-signs-of-the-ASL-Language.png](https://github.com/SohamPrajapati/sign-language-detector-flask-python/blob/master/hand-signs-of-the-ASL-Language.png)
  
 ## Project Report
  For detailed insights, analysis, and findings, refer to the Project Report provided in the repository.
