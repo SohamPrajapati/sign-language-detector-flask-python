@@ -44,7 +44,7 @@ Sign language is a crucial form of communication for individuals with hearing im
 - **About Page**
 ![Screenshot (104)](https://github.com/SohamPrajapati/sign-language-detector-flask-python/assets/95955650/362fcbaa-1cc4-4889-b6d9-ed46eea28be2)
 
-- **About Page**
+- **ASL Language**
 ![hand-signs-of-the-ASL-Language.png](https://github.com/SohamPrajapati/sign-language-detector-flask-python/blob/master/hand-signs-of-the-ASL-Language.png)
  
 ## Project Report
