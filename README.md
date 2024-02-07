@@ -17,7 +17,6 @@ Sign language is a crucial form of communication for individuals with hearing im
    
    #Navigate to the project directory
    cd sign-language-detector-flask-python
-  
   ```
   
   2. **Install the required dependencies** using the following command:
