@@ -9,12 +9,6 @@ Sign language is a crucial form of communication for individuals with hearing im
  - Landmark analysis: Utilizes Landmark module to extract key points and gestures from hand movements.
  - Machine learning translation: Employs Random Forest algorithm to classify and interpret gestures into corresponding text or spoken language.
   
-## Requirements
- - Python 3.x
- - Mediapipe library
- - Landmark module
- - Random Forest implementation
-  
 ## Usage
   1. Installation:
   ```
@@ -27,8 +21,14 @@ Sign language is a crucial form of communication for individuals with hearing im
    #Install required dependencies
    pip install -r requirements.txt
   ```
+  
+  2. **Install the required dependencies** using the following command:
+
+  ```bash
+    pip install -r requirements.txt
+  ```
    
-  2. Run the application:
+  3. Run the application:
   ```
    python sign-language-detector-flask-python.py
   ```
